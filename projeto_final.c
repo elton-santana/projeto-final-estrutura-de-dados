@@ -45,6 +45,26 @@ void printMatriz(int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLi
 	}
 }
 
+void printMatrizComRato(int posicaoRatoLinha, int posicaoRatoColuna, int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
+{
+	int linhas = numeroDeLinhas;
+	int colunas = numeroDeColunas;
+	printf("Matriz:\n");
+	for (int i = 0; i < linhas; i++)
+	{
+		for (int j = 0; j < colunas; j++)
+		{
+			if (i == )
+			{
+				*posicaoRatoLinha = i;
+				*posicaoRatoColuna = j;
+			}
+			printf("%c ", matriz[i][j]);
+		}
+		printf("\n");
+	}
+}
+
 void preencherMatriz(char *nomeDoArquivo, int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
 {
 	FILE *arquivo;
@@ -55,7 +75,7 @@ void preencherMatriz(char *nomeDoArquivo, int numeroDeLinhas, int numeroDeColuna
 	}
 
 	char caracter;
-	char quebraDeLinha = '\n';	
+	char quebraDeLinha = '\n';
 	int linha = 0;
 	int coluna = 0;
 
@@ -69,8 +89,28 @@ void preencherMatriz(char *nomeDoArquivo, int numeroDeLinhas, int numeroDeColuna
 			coluna = 0;
 		}
 	}
-	
+
 	fclose(arquivo);
+}
+
+void irAteEntrada(int *posicaoRatoLinha, int *posicaoRatoColuna, int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
+{
+	int linhas = numeroDeLinhas;
+	int colunas = numeroDeColunas;
+	printf("Matriz:\n");
+	for (int i = 0; i < linhas; i++)
+	{
+		for (int j = 0; j < colunas; j++)
+		{
+			printf("%c ", matriz[i][j]);
+			if (matriz[i][j] == '@')
+			{
+				*posicaoRatoLinha = i;
+				*posicaoRatoColuna = j;
+			}
+		}
+		printf("\n");
+	}
 }
 
 int main()
@@ -87,6 +127,13 @@ int main()
 	preencherMatriz(nomeDoArquivo, numeroDeLinhas, numeroDeColunas, matriz);
 
 	printMatriz(numeroDeLinhas, numeroDeColunas, matriz);
+
+	int posicaoRatoLinha = 0;
+	int posicaoRatoColuna = 0;
+
+	irAteEntrada(&posicaoRatoLinha, &posicaoRatoColuna, numeroDeLinhas, numeroDeColunas, matriz);
+
+	printf("%d , %d", posicaoRatoLinha, posicaoRatoColuna);
 
 	return 0;
 }
