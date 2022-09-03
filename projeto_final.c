@@ -19,13 +19,26 @@ void numeroDeLinhasEColunas(FILE *arquivo, int *numeroDeColunas, int *numeroDeLi
 	*numeroDeLinhas = auxQtdeLinha;
 }
 
+void printMatrix(int **matrix, int numeroDeLinhas, int numeroDeColunas) {
+	int linhas = numeroDeLinhas;
+	int colunas = numeroDeColunas;
+	printf("Matrix:\n");
+	for (int i = 0; i < linhas; i++)
+	{
+		for (int j = 0; j < colunas; j++)
+		{
+			printf("%c ", matrix[i][j]);
+		}
+		printf("\n");
+	}
+}
+
 // Driver code
 int main()
 {
 	FILE *arquivo;
 	char caracter;
 
-	// Opening file in reading mode
 	arquivo = fopen("input2.txt", "r");
 
 	if (NULL == arquivo)
@@ -38,16 +51,6 @@ int main()
 
     numeroDeLinhasEColunas(arquivo, &numeroDeColunas, &numeroDeLinhas);
 
-	// while (fread(&caracter, sizeof(char), 1, arquivo))
-	// {
-	// 	if (numeroDeLinhas == 1)
-	// 		numeroDeColunas++;
-	// 	if (caracter == quebraDeLinha)
-	// 	{
-	// 		numeroDeLinhas++;
-	// 	}
-	// }
-
 	printf("\nColunas: %i\n", numeroDeColunas);
 	printf("\nLinhas: %i\n", numeroDeLinhas);
 
@@ -59,26 +62,6 @@ int main()
 		{
 			matrix[i][j] = '#';
 		}
-	}
-
-	// while (fread(&caracter, sizeof(char), 1, arquivo))
-	// {
-	// 	if (numeroDeLinhas == 1)
-	// 		numeroDeColunas++;
-	// 	if (caracter == quebraDeLinha)
-	// 	{
-	// 		numeroDeLinhas++;
-	// 	}
-	// }
-
-	printf("Matrix:\n");
-	for (int i = 0; i < numeroDeLinhas; i++)
-	{
-		for (int j = 0; j < numeroDeColunas; j++)
-		{
-			printf("%c ", matrix[i][j]);
-		}
-		printf("\n");
 	}
 
 	fclose(arquivo);
