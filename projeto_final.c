@@ -39,7 +39,7 @@ void printMatriz(int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLi
 	{
 		for (int j = 0; j < colunas; j++)
 		{
-			printf("%c ", matriz[i][j]);
+			printf("%c", matriz[i][j]);
 		}
 		printf("\n");
 	}
@@ -54,12 +54,14 @@ void printMatrizComRato(int posicaoRatoLinha, int posicaoRatoColuna, int numeroD
 	{
 		for (int j = 0; j < colunas; j++)
 		{
-			if (i == )
+			if (i == posicaoRatoLinha && j == posicaoRatoColuna)
 			{
-				*posicaoRatoLinha = i;
-				*posicaoRatoColuna = j;
+				printf("o");
 			}
-			printf("%c ", matriz[i][j]);
+			else
+			{
+				printf("%c", matriz[i][j]);
+			}
 		}
 		printf("\n");
 	}
@@ -97,16 +99,15 @@ void irAteEntrada(int *posicaoRatoLinha, int *posicaoRatoColuna, int numeroDeLin
 {
 	int linhas = numeroDeLinhas;
 	int colunas = numeroDeColunas;
-	printf("Matriz:\n");
 	for (int i = 0; i < linhas; i++)
 	{
 		for (int j = 0; j < colunas; j++)
 		{
-			printf("%c ", matriz[i][j]);
 			if (matriz[i][j] == '@')
 			{
 				*posicaoRatoLinha = i;
 				*posicaoRatoColuna = j;
+				return;
 			}
 		}
 		printf("\n");
@@ -133,7 +134,9 @@ int main()
 
 	irAteEntrada(&posicaoRatoLinha, &posicaoRatoColuna, numeroDeLinhas, numeroDeColunas, matriz);
 
-	printf("%d , %d", posicaoRatoLinha, posicaoRatoColuna);
+	// printf("%d , %d", posicaoRatoLinha, posicaoRatoColuna);
+
+	printMatrizComRato(posicaoRatoLinha, posicaoRatoColuna, numeroDeLinhas, numeroDeColunas, matriz);
 
 	return 0;
 }
