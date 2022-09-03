@@ -2,8 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-void numeroDeLinhasEColunas(FILE *arquivo, int *numeroDeColunas, int *numeroDeLinhas)
+void numeroDeLinhasEColunas(char *nomeDoArquivo, int *numeroDeColunas, int *numeroDeLinhas)
 {
+	FILE *arquivo;
+	arquivo = fopen(nomeDoArquivo, "r");
+
+	if (NULL == arquivo)
+	{
+		printf("Arquivo não pode ser aberto \n");
+	}
+
 	char caracter;
 	char quebraDeLinha = '\n';
 	int auxQtdeColuna = 0;
@@ -18,6 +26,8 @@ void numeroDeLinhasEColunas(FILE *arquivo, int *numeroDeColunas, int *numeroDeLi
 	}
 	*numeroDeColunas = auxQtdeColuna;
 	*numeroDeLinhas = auxQtdeLinha;
+
+	fclose(arquivo);
 }
 
 void printMatriz(int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
@@ -33,62 +43,50 @@ void printMatriz(int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLi
 		}
 		printf("\n");
 	}
-
-	
 }
 
-void preencherMatriz(FILE *arquivo, char **matriz, int numeroDeLinhas, int numeroDeColunas)
-{
-	char c, letra = '\n';
-	int linha = 0;
-	int coluna = 0;
-	while (fread(&c, sizeof(char), 1, arquivo))
-	{
-		matriz[linha][coluna] = c;
-		coluna++;
-		if (coluna == numeroDeColunas - 1)
-			linha++;
-		coluna = 0;
-
-		printf("%c", c);
-	}
-}
-
-int main()
+void preencherMatriz(char *nomeDoArquivo, int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
 {
 	FILE *arquivo;
-	char caracter;
-
-	arquivo = fopen("input2.txt", "r");
-
+	arquivo = fopen(nomeDoArquivo, "r");
 	if (NULL == arquivo)
 	{
 		printf("Arquivo não pode ser aberto \n");
 	}
 
+	char caracter;
+	char quebraDeLinha = '\n';	
+	int linha = 0;
+	int coluna = 0;
+
+	while (fread(&caracter, sizeof(char), 1, arquivo))
+	{
+		matriz[linha][coluna] = caracter;
+		coluna++;
+		if (caracter == quebraDeLinha)
+		{
+			linha++;
+			coluna = 0;
+		}
+	}
+	
+	fclose(arquivo);
+}
+
+int main()
+{
+	char *nomeDoArquivo = "input2.txt";
+
 	int numeroDeLinhas = 0;
 	int numeroDeColunas = 0;
 
-	numeroDeLinhasEColunas(arquivo, &numeroDeColunas, &numeroDeLinhas);
-
-	printf("\nColunas: %i\n", numeroDeColunas);
-	printf("\nLinhas: %i\n", numeroDeLinhas);
+	numeroDeLinhasEColunas(nomeDoArquivo, &numeroDeColunas, &numeroDeLinhas);
 
 	char matriz[numeroDeLinhas][numeroDeColunas];
 
-	// preencherMatriz(arquivo, matriz, numeroDeLinhas, numeroDeColunas);
-
-	for (int i = 0; i < numeroDeLinhas; i++)
-	{
-		for (int j = 0; j < numeroDeColunas; j++)
-		{
-			matriz[i][j] = '#';
-		}
-	}
+	preencherMatriz(nomeDoArquivo, numeroDeLinhas, numeroDeColunas, matriz);
 
 	printMatriz(numeroDeLinhas, numeroDeColunas, matriz);
-
-	fclose(arquivo);
 
 	return 0;
 }
