@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void numeroDeLinhasEColunas(FILE *arquivo, int *numeroDeColunas, int *numeroDeLinhas) {
-    char caracter;
+void numeroDeLinhasEColunas(FILE *arquivo, int *numeroDeColunas, int *numeroDeLinhas)
+{
+	char caracter;
 	char quebraDeLinha = '\n';
 	int auxQtdeColuna = 0;
 	int auxQtdeLinha = 1;
@@ -19,21 +20,40 @@ void numeroDeLinhasEColunas(FILE *arquivo, int *numeroDeColunas, int *numeroDeLi
 	*numeroDeLinhas = auxQtdeLinha;
 }
 
-void printMatrix(int **matrix, int numeroDeLinhas, int numeroDeColunas) {
+void printMatriz(int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
+{
 	int linhas = numeroDeLinhas;
 	int colunas = numeroDeColunas;
-	printf("Matrix:\n");
+	printf("Matriz:\n");
 	for (int i = 0; i < linhas; i++)
 	{
 		for (int j = 0; j < colunas; j++)
 		{
-			printf("%c ", matrix[i][j]);
+			printf("%c ", matriz[i][j]);
 		}
 		printf("\n");
 	}
+
+	
 }
 
-// Driver code
+void preencherMatriz(FILE *arquivo, char **matriz, int numeroDeLinhas, int numeroDeColunas)
+{
+	char c, letra = '\n';
+	int linha = 0;
+	int coluna = 0;
+	while (fread(&c, sizeof(char), 1, arquivo))
+	{
+		matriz[linha][coluna] = c;
+		coluna++;
+		if (coluna == numeroDeColunas - 1)
+			linha++;
+		coluna = 0;
+
+		printf("%c", c);
+	}
+}
+
 int main()
 {
 	FILE *arquivo;
@@ -46,23 +66,27 @@ int main()
 		printf("Arquivo não pode ser aberto \n");
 	}
 
-	int numeroDeLinhas = 0;   
-	int numeroDeColunas = 0; 
+	int numeroDeLinhas = 0;
+	int numeroDeColunas = 0;
 
-    numeroDeLinhasEColunas(arquivo, &numeroDeColunas, &numeroDeLinhas);
+	numeroDeLinhasEColunas(arquivo, &numeroDeColunas, &numeroDeLinhas);
 
 	printf("\nColunas: %i\n", numeroDeColunas);
 	printf("\nLinhas: %i\n", numeroDeLinhas);
 
-	char matrix[numeroDeLinhas][numeroDeColunas];
+	char matriz[numeroDeLinhas][numeroDeColunas];
+
+	// preencherMatriz(arquivo, matriz, numeroDeLinhas, numeroDeColunas);
 
 	for (int i = 0; i < numeroDeLinhas; i++)
 	{
 		for (int j = 0; j < numeroDeColunas; j++)
 		{
-			matrix[i][j] = '#';
+			matriz[i][j] = '#';
 		}
 	}
+
+	printMatriz(numeroDeLinhas, numeroDeColunas, matriz);
 
 	fclose(arquivo);
 
