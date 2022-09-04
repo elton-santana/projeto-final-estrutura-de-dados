@@ -1,212 +1,211 @@
-#include <stdlib.h>
-#include <stdio.h>
+// #include <stdlib.h>
+// #include <stdio.h>
 
-struct Posicao
-{
-    int linha;
-    int coluna;
-    struct Posicao *cima;
-    struct Posicao *baixo;
-    struct Posicao *direita;
-    struct Posicao *esquerda;
-};
+// struct Posicao
+// {
+//     int linha;
+//     int coluna;
+//     struct Posicao *norte;
+//     struct Posicao *sul;
+//     struct Posicao *leste;
+//     struct Posicao *oeste;
+// };
 
-enum Direcao {cima, baixo, direita, esquerda};
+// enum Direcao {norte, sul, leste, oeste};
 
-struct Posicao *root = NULL;
+// struct Posicao *root = NULL;
 
-void insert(struct Posicao *posicao, struct Posicao *posicaoAnterior, int linha, int coluna, enum Direcao direcao)
-{
-    posicao = (struct Posicao *)malloc(sizeof(struct Posicao));
-    posicao->linha = linha;
-    posicao->coluna = coluna;
-    posicao->cima = NULL;
-    posicao->esquerda = NULL;
-    posicao->direita = NULL;
-    posicao->baixo = NULL;
+// void insert(struct Posicao *posicao, struct Posicao *posicaoAnterior, int linha, int coluna, enum Direcao direcao)
+// {
+//     posicao = (struct Posicao *)malloc(sizeof(struct Posicao));
+//     posicao->linha = linha;
+//     posicao->coluna = coluna;
+//     posicao->norte = NULL;
+//     posicao->oeste = NULL;
+//     posicao->leste = NULL;
+//     posicao->sul = NULL;
 
-    switch(direcao)
-    {
-    case cima:
-    posicaoAnterior->cima = posicao;
-    break;
-    case baixo:
-    posicaoAnterior->baixo = posicao;
-    break;
-    case direita:
-    posicaoAnterior->direita = posicao;
-    break;
-    case esquerda:
-    posicaoAnterior->esquerda = posicao;
-    break;
-    }
-}
+//     switch(direcao)
+//     {
+//     case norte:
+//     posicaoAnterior->norte = posicao;
+//     break;
+//     case sul:
+//     posicaoAnterior->sul = posicao;
+//     break;
+//     case leste:
+//     posicaoAnterior->leste = posicao;
+//     break;
+//     case oeste:
+//     posicaoAnterior->oeste = posicao;
+//     break;
+//     }
+// }
 
-int search(struct Node *node, int info)
-{
-    if (node != NULL)
-    {
-        if (info == node->info)
-        {
-            return 1;
-        }
-        else if (info < node->info)
-        {
-            return search(node->left, info);
-        }
-        else
-        {
-            return search(node->right, info);
-        }
-    }
-    else
-    {
-        return 0;
-    }
-}
+// int search(struct Posicao *posicao, int linha, int coluna)
+// {
+//     if (posicao != NULL)
+//     {
+//         if (linha == posicao->linha && linha == posicao->coluna)
+//         {
+//             return 1;
+//         }
+//         else
+//         {
+//             return search(posicao->norte, linha, coluna);
+//             return search(posicao->sul, linha, coluna);
+//             return search(posicao->leste, linha, coluna);
+//             return search(posicao->oeste, linha, coluna);
+//         }
+//     }
+//     else
+//     {
+//         return 0;
+//     }
+// }
 
-void orderList(struct Node *node)
-{
-    if (node != NULL)
-    {
-        orderList(node->left);
-        printf("%d ", node->info);
-        orderList(node->right);
-    }
-}
+// void orderList(struct Posicao *posicao)
+// {
+//     if (posicao != NULL)
+//     {
+//         orderList(posicao->left);
+//         printf("%d ", posicao->info);
+//         orderList(posicao->right);
+//     }
+// }
 
-void listPreOrder(struct Node *node)
-{
-    if (node != NULL)
-    {
-        printf("%d ", node->info);
-        listPreOrder(node->left);
-        listPreOrder(node->right);
-    }
-}
+// void listPreOrder(struct Posicao *posicao)
+// {
+//     if (posicao != NULL)
+//     {
+//         printf("%d ", posicao->info);
+//         listPreOrder(posicao->left);
+//         listPreOrder(posicao->right);
+//     }
+// }
 
-void listPostOrder(struct Node *node)
-{
-    if (node != NULL)
-    {
-        listPostOrder(node->left);
-        listPostOrder(node->right);
-        printf("%d ", node->info);
-    }
-}
+// void listPostOrder(struct Posicao *posicao)
+// {
+//     if (posicao != NULL)
+//     {
+//         listPostOrder(posicao->left);
+//         listPostOrder(posicao->right);
+//         printf("%d ", posicao->info);
+//     }
+// }
 
-void blankSpace(int amount)
-{
-    for (int i; i <= amount; i++)
-    {
-        printf(" ");
-    }
-}
+// void blankSpace(int amount)
+// {
+//     for (int i; i <= amount; i++)
+//     {
+//         printf(" ");
+//     }
+// }
 
-int maxHeight(struct Node *node)
-{
-    if (node == NULL)
-        return -1;
-    else
-    {
-        int leftHeight = maxHeight(node->left);
-        int rightHeight = maxHeight(node->right);
+// int maxHeight(struct Posicao *posicao)
+// {
+//     if (posicao == NULL)
+//         return -1;
+//     else
+//     {
+//         int leftHeight = maxHeight(posicao->left);
+//         int rightHeight = maxHeight(posicao->right);
 
-        if (leftHeight > rightHeight)
-            return (leftHeight + 1);
-        else
-            return (rightHeight + 1);
-    }
-}
+//         if (leftHeight > rightHeight)
+//             return (leftHeight + 1);
+//         else
+//             return (rightHeight + 1);
+//     }
+// }
 
-void showNodes(struct Node *node)
-{
-    if (node != NULL)
-    {
-        int height = maxHeight(node);
-        for (int i = 0; i <= height; i++)
-        {
-            printf("  ");
-        }
-        printf("\n nivel: %d ", height);
-        printf("%d ", node->info);
-        showNodes(node->left);
-        showNodes(node->right);
-    }
-}
+// void showNodes(struct Posicao *posicao)
+// {
+//     if (posicao != NULL)
+//     {
+//         int height = maxHeight(posicao);
+//         for (int i = 0; i <= height; i++)
+//         {
+//             printf("  ");
+//         }
+//         printf("\n nivel: %d ", height);
+//         printf("%d ", posicao->info);
+//         showNodes(posicao->left);
+//         showNodes(posicao->right);
+//     }
+// }
 
-void height()
-{
-    printf("-----------------------------------------");
-    printf("\n");
-    printf("Altura: %d", maxHeight(root));
-    printf("\n");
-    printf("-----------------------------------------");
-    printf("\n");
-}
+// void height()
+// {
+//     printf("-----------------------------------------");
+//     printf("\n");
+//     printf("Altura: %d", maxHeight(root));
+//     printf("\n");
+//     printf("-----------------------------------------");
+//     printf("\n");
+// }
 
-void prettyPrint()
-{
-    printf("-----------------------------------------");
-    printf("\n");
-    printf(" Pretty print \n \n");
-    showNodes(root);
-    printf("\n");
-    printf("-----------------------------------------");
-    printf("\n");
-}
+// void prettyPrint()
+// {
+//     printf("-----------------------------------------");
+//     printf("\n");
+//     printf(" Pretty print \n \n");
+//     showNodes(root);
+//     printf("\n");
+//     printf("-----------------------------------------");
+//     printf("\n");
+// }
 
-int main(int argc, char const *argv[])
-{
-    // 6, 2, 8, 1, 4, 3
-    height();
-    prettyPrint();
+// int main(int argc, char const *argv[])
+// {
+//     // 6, 2, 8, 1, 4, 3
+//     height();
+//     prettyPrint();
 
-    insert(&root, 6);
-    orderList(root);
-    printf("\n");
+//     insert(&root, 6);
+//     orderList(root);
+//     printf("\n");
 
-    height();
-    prettyPrint();
+//     height();
+//     prettyPrint();
 
-    insert(&root, 2);
-    orderList(root);
-    printf("\n");
+//     insert(&root, 2);
+//     orderList(root);
+//     printf("\n");
 
-    height();
-    prettyPrint();
+//     height();
+//     prettyPrint();
 
-    insert(&root, 8);
-    orderList(root);
-    printf("\n");
+//     insert(&root, 8);
+//     orderList(root);
+//     printf("\n");
 
-    height();
-    prettyPrint();
+//     height();
+//     prettyPrint();
 
-    insert(&root, 1);
-    orderList(root);
-    printf("\n");
+//     insert(&root, 1);
+//     orderList(root);
+//     printf("\n");
 
-    insert(&root, 4);
-    orderList(root);
-    printf("\n");
+//     insert(&root, 4);
+//     orderList(root);
+//     printf("\n");
 
-    insert(&root, 3);
-    orderList(root);
-    printf("\n");
+//     insert(&root, 3);
+//     orderList(root);
+//     printf("\n");
 
-    listPreOrder(root);
-    printf("\n");
+//     listPreOrder(root);
+//     printf("\n");
 
-    listPostOrder(root);
-    printf("\n");
+//     listPostOrder(root);
+//     printf("\n");
 
-    printf("%d \n", search(root, 2));
-    printf("%d \n", search(root, 3));
+//     printf("%d \n", search(root, 2));
+//     printf("%d \n", search(root, 3));
 
-    height();
+//     height();
 
-    prettyPrint();
+//     prettyPrint();
 
-    return 0;
-}
+//     return 0;
+// }
