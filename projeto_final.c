@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h> 
 
 struct Posicao
 {
@@ -46,11 +47,11 @@ void numeroDeLinhasEColunas(char *nomeDoArquivo, int *numeroDeColunas, int *nume
 	fclose(arquivo);
 }
 
-void printMatriz(struct Posicao *posicaoRato, int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
+void printMatriz(int qtdDePassos, struct Posicao *posicaoRato, int numeroDeLinhas, int numeroDeColunas, char matriz[numeroDeLinhas][numeroDeColunas])
 {
 	int linhas = numeroDeLinhas;
 	int colunas = numeroDeColunas;
-	printf("Matriz:\n");
+	printf("Ciclo número: %d \n", qtdDePassos);
 	for (int i = 0; i < linhas; i++)
 	{
 		for (int j = 0; j < colunas; j++)
@@ -166,7 +167,7 @@ void iniciar(struct Rato *rato, int numeroDeLinhas, int numeroDeColunas, char ma
 				// posicoesAcessadas[0] = *posicaoInicial;
 				setarInfoRato(rato, posicaoInicial);
 				setarDireitaInicialDoRato(rato, numeroDeLinhas, numeroDeColunas);
-				printMatriz(posicaoInicial, numeroDeLinhas, numeroDeColunas, matriz);
+				printMatriz(1, posicaoInicial, numeroDeLinhas, numeroDeColunas, matriz);
 				return;
 			}
 		}
@@ -177,6 +178,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 {
 	int qtdeDecisoes = 0;
 	int qtdeDeAcessos = 1;
+	int qtdDePassos = 1;
 
 	int fim = 0;
 
@@ -190,34 +192,38 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 	char caminhoPreferido = direitaDoRato;
 
 	while (!fim)
-	{
+	{	
 		if (norte == '$')
 		{
 			fim = 1;
 			posicaoFim = norte;
+			qtdDePassos++;
 			rato->posicao_atual->linha--;
-			printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+			printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			printf("fim!");
 		}
 		else if (oeste == '$')
 		{
 			fim = 1;
+			qtdDePassos++;
 			rato->posicao_atual->coluna--;
-			printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+			printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			printf("fim!");
 		}
 		else if (sul == '$')
 		{
 			fim = 1;
+			qtdDePassos++;
 			rato->posicao_atual->linha++;
-			printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+			printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			printf("fim!");
 		}
 		else if (leste == '$')
 		{
 			fim = 1;
+			qtdDePassos++;
 			rato->posicao_atual->coluna++;
-			printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+			printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			printf("fim!");
 		}
 
@@ -225,6 +231,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 		{
 			if (norte != '#')
 			{
+				qtdDePassos++;
 				rato->posicao_atual->linha--;
 				rato->direitaDoRato = 'l';
 				caminhoPreferido = rato->direitaDoRato;
@@ -233,7 +240,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 				norte = matriz[rato->norte->linha][rato->norte->coluna];
 				oeste = matriz[rato->oeste->linha][rato->oeste->coluna];
 				sul = matriz[rato->sul->linha][rato->sul->coluna];
-				printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+				printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			}
 			else
 			{
@@ -244,6 +251,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 		{
 			if (oeste != '#')
 			{
+				qtdDePassos++;
 				rato->posicao_atual->coluna--;
 				rato->direitaDoRato = 'n';
 				caminhoPreferido = rato->direitaDoRato;
@@ -252,7 +260,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 				norte = matriz[rato->norte->linha][rato->norte->coluna];
 				oeste = matriz[rato->oeste->linha][rato->oeste->coluna];
 				sul = matriz[rato->sul->linha][rato->sul->coluna];
-				printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+				printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			}
 			else
 			{
@@ -263,6 +271,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 		{
 			if (sul != '#')
 			{
+				qtdDePassos++;
 				rato->posicao_atual->linha++;
 				rato->direitaDoRato = 'o';
 				caminhoPreferido = rato->direitaDoRato;
@@ -271,7 +280,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 				norte = matriz[rato->norte->linha][rato->norte->coluna];
 				oeste = matriz[rato->oeste->linha][rato->oeste->coluna];
 				sul = matriz[rato->sul->linha][rato->sul->coluna];
-				printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+				printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			}
 			else
 			{
@@ -283,6 +292,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 			if (leste != '#')
 			{
 
+				qtdDePassos++;
 				rato->posicao_atual->coluna++;
 				rato->direitaDoRato = 's';
 				caminhoPreferido = rato->direitaDoRato;
@@ -291,34 +301,20 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 				norte = matriz[rato->norte->linha][rato->norte->coluna];
 				oeste = matriz[rato->oeste->linha][rato->oeste->coluna];
 				sul = matriz[rato->sul->linha][rato->sul->coluna];
-				printMatriz(rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
+				printMatriz(qtdDePassos, rato->posicao_atual, numeroDeLinhas, numeroDeColunas, matriz);
 			}
 			else
 			{
 				caminhoPreferido = 'n';
 			}
 		}
+		usleep(200000);
 	}
-}
-
-void printInfoRato(struct Rato *rato)
-{
-	printf("posicao_atual->linha: %d\n", rato->posicao_atual->linha);
-	printf("posicao_atual->coluna: %d\n", rato->posicao_atual->coluna);
-	printf("norte->linha: %d\n", rato->norte->linha);
-	printf("norte->coluna: %d\n", rato->norte->coluna);
-	printf("sul->linha: %d\n", rato->sul->linha);
-	printf("sul->coluna: %d\n", rato->sul->coluna);
-	printf("leste->linha: %d\n", rato->leste->linha);
-	printf("leste->coluna: %d\n", rato->leste->coluna);
-	printf("oeste->linha: %d\n", rato->oeste->linha);
-	printf("oeste->coluna: %d\n", rato->oeste->coluna);
-	printf("direita do rato: %c\n", rato->direitaDoRato);
 }
 
 int main()
 {
-	char *nomeDoArquivo = "oficial_input.txt";
+	char *nomeDoArquivo = "input3.txt";
 
 	int numeroDeLinhas = 0;
 	int numeroDeColunas = 0;
@@ -331,7 +327,7 @@ int main()
 
 	preencherMatriz(nomeDoArquivo, numeroDeLinhas, numeroDeColunas, matriz);
 
-	printMatriz(NULL, numeroDeLinhas, numeroDeColunas, matriz);
+	// printMatriz(NULL, numeroDeLinhas, numeroDeColunas, matriz);
 
 	struct Rato *rato = (struct Rato *)malloc(sizeof(struct Rato));
 
