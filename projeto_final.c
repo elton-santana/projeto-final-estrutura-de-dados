@@ -19,6 +19,21 @@ struct Rato
 	char direitaDoRato;
 };
 
+void printInfoRato(struct Rato *rato)
+{
+	printf("posicao_atual->linha: %d\n", rato->posicao_atual->linha);
+	printf("posicao_atual->coluna: %d\n", rato->posicao_atual->coluna);
+	printf("norte->linha: %d\n", rato->norte->linha);
+	printf("norte->coluna: %d\n", rato->norte->coluna);
+	printf("sul->linha: %d\n", rato->sul->linha);
+	printf("sul->coluna: %d\n", rato->sul->coluna);
+	printf("leste->linha: %d\n", rato->leste->linha);
+	printf("leste->coluna: %d\n", rato->leste->coluna);
+	printf("oeste->linha: %d\n", rato->oeste->linha);
+	printf("oeste->coluna: %d\n", rato->oeste->coluna);
+	printf("direita do rato: %c\n", rato->direitaDoRato);
+}
+
 void numeroDeLinhasEColunas(char *nomeDoArquivo, int *numeroDeColunas, int *numeroDeLinhas)
 {
 	FILE *arquivo;
@@ -164,7 +179,6 @@ void iniciar(struct Rato *rato, int numeroDeLinhas, int numeroDeColunas, char ma
 			{
 				posicaoInicial->linha = l;
 				posicaoInicial->coluna = c;
-				// posicoesAcessadas[0] = *posicaoInicial;
 				setarInfoRato(rato, posicaoInicial);
 				setarDireitaInicialDoRato(rato, numeroDeLinhas, numeroDeColunas);
 				printMatriz(1, posicaoInicial, numeroDeLinhas, numeroDeColunas, matriz);
@@ -190,6 +204,7 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 	char posicaoFim;
 	char direitaDoRato = rato->direitaDoRato;
 	char caminhoPreferido = direitaDoRato;
+	printf("%c", caminhoPreferido);
 
 	while (!fim)
 	{	
@@ -308,32 +323,27 @@ void percorrerLabirinto(struct Rato *rato, int numeroDeLinhas, int numeroDeColun
 				caminhoPreferido = 'n';
 			}
 		}
-		usleep(200000);
+		usleep(500000);
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	char *nomeDoArquivo = "input3.txt";
+	printf("Rato vai andar sobre o labirinto do arquivo: %s \n", argv[1]);
+	char *nomeDoArquivo = argv[1];
 
 	int numeroDeLinhas = 0;
 	int numeroDeColunas = 0;
 
 	numeroDeLinhasEColunas(nomeDoArquivo, &numeroDeColunas, &numeroDeLinhas);
-	int perimetro = numeroDeLinhas + numeroDeColunas;
-	int area = numeroDeLinhas * numeroDeColunas;
 
 	char matriz[numeroDeLinhas][numeroDeColunas];
 
 	preencherMatriz(nomeDoArquivo, numeroDeLinhas, numeroDeColunas, matriz);
 
-	// printMatriz(NULL, numeroDeLinhas, numeroDeColunas, matriz);
-
 	struct Rato *rato = (struct Rato *)malloc(sizeof(struct Rato));
 
 	iniciar(rato, numeroDeLinhas, numeroDeColunas, matriz);
-
-	// printInfoRato(rato);
 
 	percorrerLabirinto(rato, numeroDeLinhas, numeroDeColunas, matriz);
 
